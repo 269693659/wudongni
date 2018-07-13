@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<link rel="stylesheet" type="text/css" href="../css/xiaomi.css">
+</head>
+<body>
+<div id="wrap">
+	<ul id="box">
+		<!-- <li>
+			<div><img src="../images/img1.jpg"><span></span></div>
+			<span>小米电视4 55英寸</span>
+			<p>4.9mm 超级薄高端旗舰电视</p>
+			<a href="">1999元</a>
+			<div class="fit"></div>
+		</li> -->
+		
+	</ul>
+</div>
+</body>
+</html>
+<script type="text/javascript" src="../js/jquery-1.11.3.js"></script>
+<script type="text/javascript">
+	var box=$("#box");
+	
+
+	$.ajax({
+		url:"../js/xiaomi.json",
+		dataType:"json",
+		async:false,
+		success:function(data) {
+			var arr=[]
+			for(var i=0;i<data.length;i++){
+				var str=`<li>
+					<div><img src="${data[i].img}"><span></span></div>
+					<span>${data[i].title}</span>
+					<p>${data[i].mintitle}</p>
+					<a href="">${data[i].price}</a>
+					<div class="fit"></div>
+					<p class="hid">${data[i].title}</p>
+				</li>`
+				arr.push(str)
+			}
+			box.html(arr.join(''))
+		}
+	})
+	var li=$("#box li");
+	li.on("mouseover",function(){
+		
+		$(this).addClass('active').siblings().removeClass('active')
+		
+		$(this).find("span").stop(true).animate({
+			
+			bottom:10
+		})
+		$(this).find("img").stop(true).animate({
+			paddingBottom:10
+		})
+		$(this).find(".fit").stop(true).animate({
+			height:100,
+			opacity:1
+		})
+	})
+	li.on("mouseout",function(){
+		$(this).find("span").stop(true).animate({
+			bottom:0
+		})
+		$(this).find("img").stop(true).animate({
+			paddingBottom:0
+		})
+		
+		$(this).find(".fit").stop(true).animate({
+			height:0,
+			opacity:0
+		})
+	})
+</script>

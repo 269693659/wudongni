@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<link rel="stylesheet" type="text/css" href="../css/popup.css">
+</head>
+<body>
+	<div id="warp">
+		<ul class="box"></ul>
+	</div>
+	<div id="filter"></div>
+	<div id="pop">
+		<div class="top"></div>
+		<p>是否删除此商品?</p>
+		<button class="yes">删除</button>
+		<button class="no">取消</button>
+		
+	</div>
+</body>
+</html>
+<script type="text/javascript" src="../js/ajax.js"></script>
+<script type="text/javascript">
+	var ul=document.querySelector(".box")
+	var filter=document.getElementById("filter")
+	var pop=document.getElementById("pop")
+	ajax("get","../js/popup.json",{},function(data){
+		var arr=[]
+		for(var i=0;i<data.length;i++){
+			var str=`<li>
+				<div><img src=${data[i].img}></div>
+				<p>${data[i].title}</p>
+				<button class="del">删除</button>
+			</li>`
+			arr.push(str)
+		}
+		ul.innerHTML=arr.join('')
+
+	})
+	ul.onclick=function(e){
+		var e=e||event;
+
+		var target=e.target||e.srcElement;
+		if(target.tagName=="BUTTON" && target.className=="del"){
+			var _target=target
+
+			filter.style.display="block";
+			pop.style.display="block";
+			
+			pop.onclick=function(e){
+				var e=e||event;
+				var target=e.target||e.srcElement;
+				if(target.tagName=="BUTTON" && target.className=="yes"){
+					_target.parentNode.remove()
+					
+					filter.style.display="none";
+					pop.style.display="none";
+
+				}
+				if(target.tagName=="BUTTON" && target.className=="no"){
+					
+					filter.style.display="none";
+					pop.style.display="none";
+
+				}
+			}
+
+		}
+
+	}
+	
+</script>
